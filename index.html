@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中国白酒博物馆 · China Liquor Museum</title>
+<meta name="description" content="中国白酒博物馆 — 收录中国十大白酒品牌、产区地图、香型分类、文化历史在线博物馆">
+<link rel="manifest" href="#">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   CSS Variables — 灵感来自 ciggies.app 深色 + 金色体系
+══════════════════════════════════════════════════════════ */
+:root {
+  --bg-primary: #0c0a08;
+  --bg-secondary: #141008;
+  --bg-card: #1c1810;
+  --bg-card-hover: #242015;
+  --border: rgba(201, 169, 110, 0.15);
+  --border-hover: rgba(201, 169, 110, 0.35);
+  --text-primary: #f5f0e8;
+  --text-secondary: #a09070;
+  --text-muted: #6a5a40;
+  --gold: #c9a96e;
+  --gold-light: #e8d5a8;
+  --gold-dark: #8a6a30;
+  --gold-glow: rgba(201, 169, 110, 0.3);
+  --cinnabar: #c0392b;
+  --ink: #1a150e;
+  --ash: #3a3020;
+  --font-serif: 'Noto Serif SC', 'Songti SC', serif;
+  --font-sans: 'Noto Sans SC', 'PingFang SC', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   导航栏
+══════════════════════════════════════════════════════════ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: 56px;
+  background: rgba(12, 10, 8, 0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: var(--gold);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.nav-logo .icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #c9a96e, #8a6a30);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.nav-links a:hover, .nav-links a.active {
+  color: var(--gold);
+  background: rgba(201, 169, 110, 0.1);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 移动端底部导航 */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: rgba(12, 10, 8, 0.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  display: none;
+  z-index: 100;
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .bottom-nav { display: flex; align-items: center; justify-content: space-around; }
+  body { padding-bottom: 60px; }
+}
+
+.bottom-nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.65rem;
+  padding: 0.4rem 0.8rem;
+  transition: color 0.2s;
+  flex: 1;
+  text-align: center;
+}
+.bottom-nav a .icon { font-size: 1.2rem; }
+.bottom-nav a.active, .bottom-nav a:hover { color: var(--gold); }
+
+/* ═══════════════════════════════════════════════════════════
+   英雄区 Hero
+══════════════════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-align: center;
+  padding: 6rem 1.5rem 4rem;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 60%, rgba(201, 169, 110, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(192, 57, 43, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(201, 169, 110, 0.04) 0%, transparent 60%);
+}
+
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.hero-particle {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: var(--gold);
+  border-radius: 50%;
+  opacity: 0;
+  animation: heroFloat linear infinite;
+}
+
+@keyframes heroFloat {
+  0% { opacity: 0; transform: translateY(100vh); }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% { opacity: 0; transform: translateY(-10vh); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(201, 169, 110, 0.1);
+  border: 1px solid rgba(201, 169, 110, 0.3);
+  color: var(--gold);
+  font-size: 0.72rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  margin-bottom: 1.5rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+  letter-spacing: 4px;
+}
+
+.hero-title .gold { color: var(--gold); }
+
+.hero-subtitle {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+}
+
+.hero-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.8;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.hero-stat { text-align: center; }
+.hero-stat .num {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+}
+.hero-stat .label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+  letter-spacing: 1px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.7rem 1.8rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, #c9a96e, #8a6a30);
+  color: #0c0a08;
+  font-weight: 700;
+}
+.btn-gold:hover {
+  background: linear-gradient(135deg, #e8d5a8, #c9a96e);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(201, 169, 110, 0.3);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border-hover);
+  color: var(--gold);
+}
+.btn-outline:hover {
+  background: rgba(201, 169, 110, 0.08);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+/* 向下滚动指示 */
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   通用布局
+══════════════════════════════════════════════════════════ */
+.main { max-width: 1100px; margin: 0 auto; padding: 5rem 1.5rem; }
+
+.section { margin-bottom: 5rem; }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.section-title .icon { font-size: 1.2rem; }
+.section-title .gold { color: var(--gold); }
+
+.section-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  gap: 1.5rem;
+}
+.section-meta span { display: flex; align-items: center; gap: 0.3rem; }
+
+/* ═══════════════════════════════════════════════════════════
+   产区地图
+══════════════════════════════════════════════════════════ */
+.regions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 768px) { .regions-grid { grid-template-columns: 1fr; } }
+
+.region-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 1px solid var(--border);
+  aspect-ratio: 4/3;
+}
+
+.region-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+}
+
+.region-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+}
+
+.region-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(12,10,8,0.9) 0%, rgba(12,10,8,0.3) 60%, transparent 100%);
+}
+
+.region-content {
+  position: relative;
+  z-index: 1;
+  padding: 1.5rem;
+  width: 100%;
+}
+
+.region-flag {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.region-name {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.region-sub {
+  font-size: 0.78rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.region-brands {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.region-brand-tag {
+  background: rgba(201, 169, 110, 0.1);
+  border: 1px solid rgba(201, 169, 110, 0.2);
+  color: var(--gold-light);
+  font-size: 0.65rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   品牌卡片
+══════════════════════════════════════════════════════════ */
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.brand-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.brand-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.brand-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+}
+.brand-card:hover::before { opacity: 1; }
+
+.brand-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.brand-rank {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, rgba(201,169,110,0.2), rgba(201,169,110,0.05));
+  border: 1px solid rgba(201,169,110,0.3);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.brand-rank.top3 {
+  background: linear-gradient(135deg, rgba(201,169,110,0.4), rgba(201,169,110,0.15));
+  border-color: var(--gold);
+}
+
+.brand-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: rgba(201, 169, 110, 0.08);
+  border: 1px solid rgba(201, 169, 110, 0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.brand-name-en {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+}
+
+.brand-location {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.brand-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.brand-tag {
+  background: rgba(192, 57, 43, 0.12);
+  border: 1px solid rgba(192, 57, 43, 0.25);
+  color: #e87070;
+  font-size: 0.65rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 6px;
+}
+
+.brand-tag.type {
+  background: rgba(201, 169, 110, 0.1);
+  border-color: rgba(201, 169, 110, 0.25);
+  color: var(--gold);
+}
+
+.brand-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-top: 0.8rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.8rem;
+}
+
+.brand-price {
+  margin-top: 0.8rem;
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   香型分类
+══════════════════════════════════════════════════════════ */
+.flavors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.flavor-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s;
+  cursor: default;
+}
+
+.flavor-card:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+  transform: translateY(-3px);
+}
+
+.flavor-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.flavor-name {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+}
+
+.flavor-sub {
+  font-size: 0.72rem;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+
+.flavor-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.flavor-represent {
+  margin-top: 0.8rem;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.flavor-represent span {
+  background: rgba(201,169,110,0.08);
+  border: 1px solid rgba(201,169,110,0.2);
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  color: var(--gold-light);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   历史时间线
+══════════════════════════════════════════════════════════ */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--gold-dark), var(--gold), var(--gold-dark), transparent);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -2rem;
+  top: 0.4rem;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(201, 169, 110, 0.5);
+  transform: translateX(-5px);
+}
+
+.timeline-year {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+
+.timeline-title {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.timeline-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   搜索
+══════════════════════════════════════════════════════════ */
+.search-section {
+  position: relative;
+}
+
+.search-box {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-box input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 0.9rem 1.2rem 0.9rem 3rem;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s;
+  font-family: var(--font-sans);
+}
+.search-box input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.15), 0 8px 24px rgba(0,0,0,0.3);
+}
+.search-box input::placeholder { color: var(--text-muted); }
+.search-box::before {
+  content: '🔍';
+  position: absolute;
+  left: 1rem; top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   精选酒款
+══════════════════════════════════════════════════════════ */
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.2rem;
+}
+
+.featured-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.featured-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+}
+
+.featured-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.featured-img::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, var(--bg-card));
+}
+
+.featured-body { padding: 1.2rem; }
+
+.featured-name {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+}
+
+.featured-sub {
+  font-size: 0.72rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.featured-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.featured-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border);
+}
+
+.featured-price {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.featured-badge {
+  background: rgba(201,169,110,0.1);
+  border: 1px solid rgba(201,169,110,0.25);
+  color: var(--gold-light);
+  font-size: 0.65rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   底部
+══════════════════════════════════════════════════════════ */
+.footer {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  padding: 3rem 1.5rem 2rem;
+  margin-top: 2rem;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.footer-brand {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.footer-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.footer-col-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 0.8rem;
+}
+
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 0.4rem; }
+.footer-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.82rem;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold); }
+
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.footer-copy {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.footer-copy a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.footer-copy a:hover { text-decoration: underline; }
+
+/* ═══════════════════════════════════════════════════════════
+   标签筛选
+══════════════════════════════════════════════════════════ */
+.filter-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.filter-tab {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.35rem 0.9rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.filter-tab:hover, .filter-tab.active {
+  background: rgba(201, 169, 110, 0.1);
+  border-color: rgba(201, 169, 110, 0.4);
+  color: var(--gold);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   滚动渐入
+══════════════════════════════════════════════════════════ */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+}
+.scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════════════════════════════════
+   滚动条
+══════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--ash); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+
+/* ═══════════════════════════════════════════════════════════
+   响应式
+══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .hero-stats { gap: 1.5rem; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .brands-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .brands-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 1rem; }
+  .hero-stat .num { font-size: 1.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═════════════════ NAV ═════════════════ -->
+<nav class="nav">
+  <a href="#" class="nav-logo">
+    <div class="icon">🍶</div>
+    <span>中国白酒博物馆</span>
+  </a>
+  <div class="nav-links">
+    <a href="#brands" onclick="scrollToSection('brands')">品牌</a>
+    <a href="#regions" onclick="scrollToSection('regions')">产区</a>
+    <a href="#flavors" onclick="scrollToSection('flavors')">香型</a>
+    <a href="#history" onclick="scrollToSection('history')">历史</a>
+    <a href="#featured" onclick="scrollToSection('featured')">精选</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn btn-outline" style="padding:0.4rem 1rem;font-size:0.8rem" onclick="openSearch()">🔍 搜索</button>
+  </div>
+</nav>
+
+<!-- ═════════════════ MOBILE BOTTOM NAV ═════════════════ -->
+<nav class="bottom-nav">
+  <a href="#brands" class="active" onclick="scrollToSection('brands')">
+    <span class="icon">🏺</span>
+    <span>品牌</span>
+  </a>
+  <a href="#regions" onclick="scrollToSection('regions')">
+    <span class="icon">🗺️</span>
+    <span>产区</span>
+  </a>
+  <a href="#flavors" onclick="scrollToSection('flavors')">
+    <span class="icon">✨</span>
+    <span>香型</span>
+  </a>
+  <a href="#history" onclick="scrollToSection('history')">
+    <span class="icon">📜</span>
+    <span>历史</span>
+  </a>
+  <a href="#featured" onclick="scrollToSection('featured')">
+    <span class="icon">⭐</span>
+    <span>精选</span>
+  </a>
+</nav>
+
+<!-- ═════════════════ HERO ═════════════════ -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-particles" id="heroParticles"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">🏛️ 中国 · 酒文化数字博物馆</div>
+    <h1 class="hero-title">中国<span class="gold">白酒</span>博物馆</h1>
+    <p class="hero-subtitle">China Liquor Museum</p>
+    <p class="hero-desc">
+      收录中国十大白酒品牌、6大香型体系、8大核心产区，<br>
+      探索千年酒文化的历史脉络与酿造工艺传承。
+    </p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">10+</div>
+        <div class="label">知名白酒品牌</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">6</div>
+        <div class="label">主流香型</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">8</div>
+        <div class="label">核心产区</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">2000+</div>
+        <div class="label">年酿造历史</div>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <a href="#brands" class="btn btn-gold" onclick="scrollToSection('brands')">探索品牌 🏺</a>
+      <a href="#history" class="btn btn-outline" onclick="scrollToSection('history')">酒文化历史 📜</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>向下滚动</span>
+    <span>↓</span>
+  </div>
+</section>
+
+<!-- ═════════════════ MAIN ═════════════════ -->
+<main class="main">
+
+<!-- ════════════════════════
+     品牌档案
+══════════════════════════════ -->
+<section class="section" id="brands">
+  <div class="section-header">
+    <div class="section-title"><span class="icon">🏺</span> 品牌<span class="gold">档案</span></div>
+    <div class="section-meta">
+      <span>🏺 10 大品牌</span>
+      <span>📍 全国产区</span>
+    </div>
+  </div>
+
+  <div class="filter-tabs">
+    <a class="filter-tab active" onclick="filterBrands('all', this)">全部</a>
+    <a class="filter-tab" onclick="filterBrands('jiang', this)">酱香型</a>
+    <a class="filter-tab" onclick="filterBrands('nong', this)">浓香型</a>
+    <a class="filter-tab" onclick="filterBrands('qing', this)">清香型</a>
+    <a class="filter-tab" onclick="filterBrands('mian', this)">绵柔型</a>
+    <a class="filter-tab" onclick="filterBrands('feng', this)">凤香型</a>
+    <a class="filter-tab" onclick="filterBrands('lao', this)">老白干型</a>
+  </div>
+
+  <div class="brands-grid" id="brandsGrid">
+
+    <!-- 茅台 -->
+    <div class="brand-card scroll-reveal visible" data-type="jiang">
+      <div class="brand-top">
+        <div class="brand-icon">🏆</div>
+        <div class="brand-rank top3">🥇</div>
+      </div>
+      <div class="brand-name">茅台</div>
+      <div class="brand-name-en">Kweichow Moutai</div>
+      <div class="brand-location">📍 贵州省遵义市仁怀市茅台镇</div>
+      <div class="brand-tags">
+        <span class="brand-tag type">酱香型</span>
+        <span class="brand-tag">国家地理标志</span>
+        <span class="brand-tag">老字号</span>
+      </div>
+      <div class="brand-desc">中国酱香型白酒典范，大曲酱香工艺的鼻祖，因产于茅台镇而得名，素有"国酒"之称。</div>
+      <div class="brand-price">飞天茅台 53° / ¥1499+</div>
+    </div>
+
+    <!-- 五粮液 -->
+    <div class="brand-card scroll-reveal" data-type="nong">
+      <div class="brand-top">
+        <div class="brand-icon">🌾</div>
+        <div class="brand-rank top3">🥈</div>
+      </div>
+      <div class="brand-name">五粮液</div>
+      <div class="brand-name-en">Wuliangye</div>
+      <div class="brand-location">📍 四川省宜宾市翠屏区</div>
+      <div class="brand-tags">
+        <span class="brand-tag type">浓香型</span>
+        <span class="brand-tag">多粮酿造</span>
+        <span class="brand-tag">国家名酒</span>
+      </div>
+      <div class="brand-desc">以高粱、小麦、玉米、大米、糯米五种粮食为原料，采用"包包曲"发酵，是中国浓香型白酒的代表。</div>
+      <div class="brand-price">普五 52° / ¥1000+</div>
+    </div>
+
+    <!-- 泸州老窖 -->
+    <div class="brand-card scroll-reveal" data-type="nong">
+      <div class="brand-top">
+        <div class="brand-icon">🏺</div>
+        <div class="brand-rank top3">🥉</div>
+      </div>
+      <div class="brand-name">泸州老窖</div>
+      <div class="brand-name-en">Luzhou Laojiao</div>
+      <div class="brand-location">📍 四川省泸州市龙马潭区</div>
+      <div class="brand-tags">
+        <span class="brand-tag type">浓香型</span>
+        <span class="brand-tag">单粮酿造</span>
+        <span class="brand-tag">老窖池</span>
+      </div>
+      <div class="brand-desc">拥有1000年以上历史的"活窖池"，其"千年老窖万年糟"工艺成就了独特的窖香风味。</div>
+      <div class="brand-price">国窖1573 52° / ¥999+</div>
+    </div>
+
+    <!-- 汾酒 -->
+    <div class="brand-card scroll-reveal" data-type="qing">
+      <div class="brand-top">
+        <div class="brand-icon">🌿</div>
+        <div class="brand-rank">④</div>
+      </div>
+      <div class="brand-name">汾酒</div>
+      <div class="brand-name-en">Fenjiu</div>
+      <div class="brand-location">📍 山西省吕梁市汾阳市</div>
+      <div class="brand-tags">
+        <span class="brand-tag type">清香型</span>
+        <span class="brand-tag">国家名酒</span>
+        <span class="brand-tag">历史名酒</span>
+      </div>
+      <div class="brand-desc">中国清香型白酒的发源地和卓越代表，以"清"为核心，口感纯净、绵甜、回味悠长。</div>
+      <div class="brand-price">青花30 53° / ¥800+</div>
+    </div>
+
+    <!-- 洋河 -->
+    <div class="brand-card scroll-reveal" data-type="mian">
+      <div class="brand-top">
+        <div class="brand-icon">💧</div>
+        <div class="brand-rank">⑤</div>
+      </div>
+      <div class="brand-name">洋河</div>
+      <div class="brand-name-en">Yanghe</div>
+      <div class="brand-location">📍 江苏省宿迁市洋河新区</div>
+      <div class="brand-tags">
+        <span class="brand-tag type">绵柔型</span>
+        <span class="brand-tag">绵柔低刺激</span>
+        <span class="brand-tag">蓝色经典</span>
+      </div>
+      <div class="brand-desc">以"绵柔"风格著称，开创中国绵柔型白酒先河，以"梦之蓝"系列闻名全国。</div>
+      <div class="brand-price">梦之蓝M9 52° / ¥1200+</div>
+    </div>
+
+    <!-- 郎酒 -->
+    <div class="brand-card scroll-reveal" data-type="jiang">
+      <div class="brand-top">
+        <div class="brand-icon">⛰️</div>
+        <div class="brand-rank">⑥</div>
+      </div>
+      <div class="brand-name">郎酒</div>
+      <div class="brand-name-en">Langjiu</div>
+      <div class="brand-location">📍 四川省泸州市古蔺县二郎镇</div>
+      <div class="brand-tags">
+        <span class="brand-tag type">酱香型</span>
+        <span class="brand-tag">川酱代表</span>
+        <span class="brand-tag">天宝洞藏</span>
+      </div>
+      <div class="brand-desc">酱香型白酒骨干企业，"生长养藏"酿造体系独特，天宝洞贮酒至今已有1000多年历史。</div>
+      <div class="brand-price">青花郎 53° / ¥1200+</div>
+    </div>
+
+    <!-- 古井贡 -->
+    <div class="brand-card scroll-reveal" data-type="nong">
+      <div class="brand-top">
+        <div class="brand-icon">🏯</div>
+        <div class="brand-rank">⑦</div>
+      </div>
+      <div class="brand-name">古井贡酒</div>
+      <div class="brand-name-en">Gujing Gongjiu</div>
+      <div class="brand-location">📍 安徽省亳州市谯城区</div>
+      <div class="brand-tags">
+        <span class="brand-tag type">浓香型</span>
+        <span class="brand-tag">年份原浆</span>
+        <span class="brand-tag">非遗技艺</span>
+      </div>
+      <div class="brand-desc">"贡酒"得名于明、清两代进贡皇室，以"色清如水晶、香纯似幽兰"著称，是江淮派浓香代表。</div>
+      <div class="brand-price">年份原浆G20 52° / ¥700+</div>
+    </div>
+
+    <!-- 剑南春 -->
+    <div class="brand-card scroll-reveal" data-type="nong">
+      <div class="brand-top">
+        <div class="brand-icon">❄️</div>
+        <div class="brand-rank">⑧</div>
+      </div>
+      <div class="brand-name">剑南春</div>
+      <div class="brand-name-en">Jiannanchun</div>
+      <div class="brand-location">📍 四川省德阳市绵竹市</div>
+      <div class="brand-tags">
+        <span class="brand-tag type">浓香型</span>
+        <span class="brand-tag">盛唐贡酒</span>
+        <span class="brand-tag">国家名酒</span>
+      </div>
+      <div class="brand-desc">唐代"剑南烧春"正宗传承者，"天益老号"活窖池群保存完整，是中国浓香型白酒活文物。</div>
+      <div class="brand-price">水晶剑南春 52° / ¥500+</div>
+    </div>
+
+    <!-- 水井坊 -->
+    <div class="brand-card scroll-reveal" data-type="nong">
+      <div class="brand-top">
+        <div class="brand-icon">⛩️</div>
+        <div class="brand-rank">⑨</div>
+      </div>
+      <div class="brand-name">水井坊</div>
+      <div class="brand-name-en">Shuijingfang</div>
+      <div class="brand-location">📍 四川省成都市锦江区</div>
+      <div class="brand-tags">
+        <span class="brand-tag type">浓香型</span>
+        <span class="brand-tag">最古老窖池</span>
+        <span class="brand-tag">非遗技艺</span>
+      </div>
+      <div class="brand-desc">1998年考古发现元末明初完整酿酒作坊遗址，被誉为"中国白酒第一坊"，600年不间断酿造。</div>
+      <div class="brand-price">水井坊井台 52° / ¥600+</div>
+    </div>
+
+    <!-- 舍得 -->
+    <div class="brand-card scroll-reveal" data-type="nong">
+      <div class="brand-top">
+        <div class="brand-icon">🍃</div>
+        <div class="brand-rank">⑩</div>
+      </div>
+      <div class="brand-name">舍得</div>
+      <div class="brand-name-en">Shede</div>
+      <div class="brand-location">📍 四川省遂宁市射洪市</div>
+      <div class="brand-tags">
+        <span class="brand-tag type">浓香型</span>
+        <span class="brand-tag">生态酿造</span>
+        <span class="brand-tag">老窖池</span>
+      </div>
+      <div class="brand-desc">"舍百斤好酒，得二斤精华"，舍得酒业拥有"泰安作坊"活文物窖池，生态酿酒理念领先行业。</div>
+      <div class="brand-price">品味舍得 52° / ¥500+</div>
+    </div>
+
+    <!-- 牛栏山 -->
+    <div class="brand-card scroll-reveal" data-type="qing">
+      <div class="brand-top">
+        <div class="brand-icon">🐂</div>
+        <div class="brand-rank">⑪</div>
+      </div>
+      <div class="brand-name">牛栏山</div>
+      <div class="brand-name-en">Niulanshan</div>
+      <div class="brand-location">📍 北京市顺义区</div>
+      <div class="brand-tags">
+        <span class="brand-tag type">清香型</span>
+        <span class="brand-tag">二锅头发源地</span>
+        <span class="brand-tag">民酒之王</span>
+      </div>
+      <div class="brand-desc">二锅头酿酒技艺传承者，"正宗二锅头，传承三百年"，以高性价比成为北京地产名酒代表。</div>
+      <div class="brand-price">经典二锅头 46° / ¥30+</div>
+    </div>
+
+    <!-- 西凤 -->
+    <div class="brand-card scroll-reveal" data-type="feng">
+      <div class="brand-top">
+        <div class="brand-icon">🐦</div>
+        <div class="brand-rank">⑫</div>
+      </div>
+      <div class="brand-name">西凤酒</div>
+      <div class="brand-name-en">Xifeng</div>
+      <div class="brand-location">📍 陕西省宝鸡市凤翔县</div>
+      <div class="brand-tags">
+        <span class="brand-tag type">凤香型</span>
+        <span class="brand-tag">老四大名酒</span>
+        <span class="brand-tag">独特香型</span>
+      </div>
+      <div class="brand-desc">中国老四大名酒之一，独创"凤香型"白酒品类，集酱香、浓香优点于一身，"不上头、不干喉"。</div>
+      <div class="brand-price">红西凤 52° / ¥800+</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════
+     产区地图
+══════════════════════════════ -->
+<section class="section" id="regions">
+  <div class="section-header">
+    <div class="section-title"><span class="icon">🗺️</span> 核心<span class="gold">产区</span></div>
+    <div class="section-meta"><span>📍 8 大产区</span></div>
+  </div>
+
+  <div class="regions-grid">
+
+    <div class="region-card scroll-reveal" style="background: linear-gradient(135deg, #1a0a0a, #2d1510)">
+      <div class="region-gradient"></div>
+      <div class="region-content">
+        <div class="region-flag">🏔️</div>
+        <div class="region-name">黔派产区</div>
+        <div class="region-sub">贵州省 · 酱香型核心产区</div>
+        <div class="region-brands">
+          <span class="region-brand-tag">茅台</span>
+          <span class="region-brand-tag">郎酒</span>
+          <span class="region-brand-tag">习酒</span>
+          <span class="region-brand-tag">金沙</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="region-card scroll-reveal" style="background: linear-gradient(135deg, #0a1520, #101828)">
+      <div class="region-gradient"></div>
+      <div class="region-content">
+        <div class="region-flag">🌊</div>
+        <div class="region-name">川派产区</div>
+        <div class="region-sub">四川省 · 浓香型最大产区</div>
+        <div class="region-brands">
+          <span class="region-brand-tag">五粮液</span>
+          <span class="region-brand-tag">泸州老窖</span>
+          <span class="region-brand-tag">剑南春</span>
+          <span class="region-brand-tag">水井坊</span>
+          <span class="region-brand-tag">舍得</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="region-card scroll-reveal" style="background: linear-gradient(135deg, #1a1200, #282000)">
+      <div class="region-gradient"></div>
+      <div class="region-content">
+        <div class="region-flag">🌾</div>
+        <div class="region-name">苏派产区</div>
+        <div class="region-sub">江苏省 · 绵柔型代表产区</div>
+        <div class="region-brands">
+          <span class="region-brand-tag">洋河</span>
+          <span class="region-brand-tag">今世缘</span>
+          <span class="region-brand-tag">双沟</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="region-card scroll-reveal" style="background: linear-gradient(135deg, #0a1a10, #0f2818)">
+      <div class="region-gradient"></div>
+      <div class="region-content">
+        <div class="region-flag">⛰️</div>
+        <div class="region-name">晋派产区</div>
+        <div class="region-sub">山西省 · 清香型发源地</div>
+        <div class="region-brands">
+          <span class="region-brand-tag">汾酒</span>
+          <span class="region-brand-tag">竹叶青</span>
+          <span class="region-brand-tag">杏花村</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="region-card scroll-reveal" style="background: linear-gradient(135deg, #1a0f20, #20102c)">
+      <div class="region-gradient"></div>
+      <div class="region-content">
+        <div class="region-flag">🏯</div>
+        <div class="region-name">徽派产区</div>
+        <div class="region-sub">安徽省 · 兼香与浓香产区</div>
+        <div class="region-brands">
+          <span class="region-brand-tag">古井贡</span>
+          <span class="region-brand-tag">口子窖</span>
+          <span class="region-brand-tag">金种子</span>
+          <span class="region-brand-tag">迎驾贡</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="region-card scroll-reveal" style="background: linear-gradient(135deg, #200a00, #301000)">
+      <div class="region-gradient"></div>
+      <div class="region-content">
+        <div class="region-flag">🐦</div>
+        <div class="region-name">秦派产区</div>
+        <div class="region-sub">陕西省 · 凤香型发源地</div>
+        <div class="region-brands">
+          <span class="region-brand-tag">西凤酒</span>
+          <span class="region-brand-tag">太白</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="region-card scroll-reveal" style="background: linear-gradient(135deg, #001020, #001030)">
+      <div class="region-gradient"></div>
+      <div class="region-content">
+        <div class="region-flag">🏙️</div>
+        <div class="region-name">京派产区</div>
+        <div class="region-sub">北京 · 二锅头发源地</div>
+        <div class="region-brands">
+          <span class="region-brand-tag">牛栏山</span>
+          <span class="region-brand-tag">红星</span>
+          <span class="region-brand-tag">京都</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="region-card scroll-reveal" style="background: linear-gradient(135deg, #101000, #181500)">
+      <div class="region-gradient"></div>
+      <div class="region-content">
+        <div class="region-flag">🏜️</div>
+        <div class="region-name">冀派产区</div>
+        <div class="region-sub">河北省 · 老白干香型</div>
+        <div class="region-brands">
+          <span class="region-brand-tag">衡水老白干</span>
+          <span class="region-brand-tag">丛台</span>
+          <span class="region-brand-tag">刘伶醉</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="region-card scroll-reveal" style="background: linear-gradient(135deg, #0a1505, #101a08)">
+      <div class="region-gradient"></div>
+      <div class="region-content">
+        <div class="region-flag">🌲</div>
+        <div class="region-name">鲁派产区</div>
+        <div class="region-sub">山东省 · 芝麻香型代表</div>
+        <div class="region-brands">
+          <span class="region-brand-tag">扳倒井</span>
+          <span class="region-brand-tag">景芝</span>
+          <span class="region-brand-tag">古贝春</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════
+     香型分类
+══════════════════════════════ -->
+<section class="section" id="flavors">
+  <div class="section-header">
+    <div class="section-title"><span class="icon">✨</span> 香型<span class="gold">分类</span></div>
+    <div class="section-meta"><span>✨ 6 大主流香型</span></div>
+  </div>
+
+  <div class="flavors-grid">
+
+    <div class="flavor-card scroll-reveal">
+      <div class="flavor-icon">🏆</div>
+      <div class="flavor-name">酱香型</div>
+      <div class="flavor-sub">Jiang Xiang · Soy Sauce Aroma</div>
+      <div class="flavor-desc">以茅台为代表，特点是"酱香突出、幽雅细腻、酒体醇厚、回味悠长"，呈微黄色，有"空杯留香"之说。</div>
+      <div class="flavor-represent">
+        <span>茅台</span><span>郎酒</span><span>习酒</span>
+      </div>
+    </div>
+
+    <div class="flavor-card scroll-reveal">
+      <div class="flavor-icon">🌺</div>
+      <div class="flavor-name">浓香型</div>
+      <div class="flavor-sub">Nong Xiang · Strong Aroma</div>
+      <div class="flavor-desc">以五粮液、泸州老窖为代表，特点是"窖香浓郁、绵甜甘冽、香味协调、尾净余长"，是中国产量最大的白酒香型。</div>
+      <div class="flavor-represent">
+        <span>五粮液</span><span>泸州老窖</span><span>剑南春</span>
+      </div>
+    </div>
+
+    <div class="flavor-card scroll-reveal">
+      <div class="flavor-icon">🌿</div>
+      <div class="flavor-name">清香型</div>
+      <div class="flavor-sub">Qing Xiang · Light Aroma</div>
+      <div class="flavor-desc">以汾酒为代表，特点是"清香纯正、诸味协调、醇甜柔和、余味爽净"，发酵周期短，口感纯净爽冽。</div>
+      <div class="flavor-represent">
+        <span>汾酒</span><span>牛栏山</span><span>二锅头</span>
+      </div>
+    </div>
+
+    <div class="flavor-card scroll-reveal">
+      <div class="flavor-icon">💧</div>
+      <div class="flavor-name">绵柔型</div>
+      <div class="flavor-sub">Mian Rou · Soft & Mellow</div>
+      <div class="flavor-desc">以洋河梦之蓝为代表，创新香型，特点是"绵甜柔和、香味协调、顺滑爽净、回味悠长"，低刺激更易入口。</div>
+      <div class="flavor-represent">
+        <span>洋河</span><span>今世缘</span>
+      </div>
+    </div>
+
+    <div class="flavor-card scroll-reveal">
+      <div class="flavor-icon">🐦</div>
+      <div class="flavor-name">凤香型</div>
+      <div class="flavor-sub">Feng Xiang · Phoenix Aroma</div>
+      <div class="flavor-desc">以西凤酒为代表，独创品类，集酱香与浓香工艺优点，口感"清而不淡、浓而不酽、诸味协调"，"入口甜、落口绵"。</div>
+      <div class="flavor-represent">
+        <span>西凤酒</span><span>太白酒</span>
+      </div>
+    </div>
+
+    <div class="flavor-card scroll-reveal">
+      <div class="flavor-icon">🌾</div>
+      <div class="flavor-name">老白干型</div>
+      <div class="flavor-sub">Lao Bai Gan · Aged White Spirit</div>
+      <div class="flavor-desc">以衡水老白干为代表，特点是"醇香清雅、甘冽挺爽、诸味协调、回味悠长"，酒体清亮透明，无悬浮物和沉淀。</div>
+      <div class="flavor-represent">
+        <span>衡水老白干</span><span>丛台</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════
+     历史时间线
+══════════════════════════════ -->
+<section class="section" id="history">
+  <div class="section-header">
+    <div class="section-title"><span class="icon">📜</span> 酒文化<span class="gold">历史</span></div>
+    <div class="section-meta"><span>📜 2000+ 年历史</span></div>
+  </div>
+
+  <div class="timeline">
+
+    <div class="timeline-item scroll-reveal">
+      <div class="timeline-year">殷商</div>
+      <div class="timeline-title">酒曲诞生 · 酿酒文明起源</div>
+      <div class="timeline-desc">殷商时期（公元前1600-前1046年），先民已掌握用酒曲发酵酿酒的技艺，甲骨文中出现"酒"字，酿酒成为祭祀与日常生活的重要组成部分。</div>
+    </div>
+
+    <div class="timeline-item scroll-reveal">
+      <div class="timeline-year">西周</div>
+      <div class="timeline-title">礼酒制度 · 酒文化成型</div>
+      <div class="timeline-desc">西周建立完善的礼酒制度，"酒礼"成为周礼核心内容之一，饮酒行为被纳入礼制规范，酒文化从物质层面上升到精神层面。</div>
+    </div>
+
+    <div class="timeline-item scroll-reveal">
+      <div class="timeline-year">唐宋</div>
+      <div class="timeline-title">诗词酒韵 · 酒文化鼎盛</div>
+      <div class="timeline-desc">唐宋是中国酒文化黄金时代，诗歌与酒结下不解之缘——李白"斗酒诗百篇"，杜甫"醉里从为客"，白酒（烧酒）工艺在宋代已有明确记载。</div>
+    </div>
+
+    <div class="timeline-item scroll-reveal">
+      <div class="timeline-year">元</div>
+      <div class="timeline-title">蒸馏技术传入 · 白酒诞生</div>
+      <div class="timeline-desc">元代蒸馏酿酒技术从阿拉伯传入中国，中国酿酒师将其与中国传统酿造工艺结合，诞生了真正意义上的中国白酒（烧刀子、高粱酒）。</div>
+    </div>
+
+    <div class="timeline-item scroll-reveal">
+      <div class="timeline-year">明清</div>
+      <div class="timeline-title">窖池工艺 · 名酒体系形成</div>
+      <div class="timeline-desc">明清两代，各地名酒品牌逐渐形成，窖池发酵工艺成熟——泸州、茅台、汾酒等作坊建立，百年老窖成为品质保证的象征。</div>
+    </div>
+
+    <div class="timeline-item scroll-reveal">
+      <div class="timeline-year">1915</div>
+      <div class="timeline-title">巴拿马万国博览会 · 中国酒走向世界</div>
+      <div class="timeline-desc">1915年巴拿马太平洋万国博览会，茅台酒（贵州展区）惊艳四座，斩获金奖，从此中国白酒蜚声国际，与法国白兰地、苏格兰威士忌并称世界三大蒸馏酒。</div>
+    </div>
+
+    <div class="timeline-item scroll-reveal">
+      <div class="timeline-year">1951</div>
+      <div class="timeline-title">国营化改造 · 现代白酒工业起步</div>
+      <div class="timeline-desc">新中国成立后，各地名酒作坊陆续实现国营化改造，茅台、五粮液、汾酒等相继成立国营酒厂，中国白酒进入现代化、规模化生产阶段。</div>
+    </div>
+
+    <div class="timeline-item scroll-reveal">
+      <div class="timeline-year">2000s</div>
+      <div class="timeline-title">香型标准化 · 品牌国际化</div>
+      <div class="timeline-desc">2000年后，中国白酒形成完整的香型标准体系（GB/T 10781），各大品牌加速品牌建设与文化输出，白酒成为中国文化走向世界的重要载体。</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════
+     精选酒款
+══════════════════════════════ -->
+<section class="section" id="featured">
+  <div class="section-header">
+    <div class="section-title"><span class="icon">⭐</span> 精选<span class="gold">酒款</span></div>
+    <div class="section-meta"><span>⭐ 人气酒款</span></div>
+  </div>
+
+  <div class="featured-grid">
+
+    <div class="featured-card scroll-reveal">
+      <div class="featured-img">🏆</div>
+      <div class="featured-body">
+        <div class="featured-name">飞天茅台 53°</div>
+        <div class="featured-sub">茅台 · 500ml · 酱香型</div>
+        <div class="featured-desc">茅台酒厂核心产品，大曲酱香工艺巅峰之作，色泽微黄透明，酱香突出，幽雅细腻，空杯留香持久。</div>
+        <div class="featured-footer">
+          <div class="featured-price">¥1499+</div>
+          <div class="featured-badge">高端旗舰</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-card scroll-reveal">
+      <div class="featured-img">🌾</div>
+      <div class="featured-body">
+        <div class="featured-name">普五（五粮液）52°</div>
+        <div class="featured-sub">五粮液 · 500ml · 浓香型</div>
+        <div class="featured-desc">五粮液核心单品，五种粮食固态发酵，窖香浓郁，绵甜醇和，香气协调，是浓香型白酒标杆产品。</div>
+        <div class="featured-footer">
+          <div class="featured-price">¥1000+</div>
+          <div class="featured-badge">浓香典范</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-card scroll-reveal">
+      <div class="featured-img">🏺</div>
+      <div class="featured-body">
+        <div class="featured-name">国窖1573 52°</div>
+        <div class="featured-sub">泸州老窖 · 500ml · 浓香型</div>
+        <div class="featured-desc">源自明代老窖池群（始建1573年），"活窖池"酿造，窖香浓郁，陈香幽雅，绵甜爽净，每一滴皆是活文物。</div>
+        <div class="featured-footer">
+          <div class="featured-price">¥999+</div>
+          <div class="featured-badge">活窖珍酿</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-card scroll-reveal">
+      <div class="featured-img">🌿</div>
+      <div class="featured-body">
+        <div class="featured-name">青花30 汾酒 53°</div>
+        <div class="featured-sub">汾酒 · 500ml · 清香型</div>
+        <div class="featured-desc">汾酒高端旗舰，青花瓷包装，清香纯正，入口绵甜柔和，落口爽净，余味悠长，清香型白酒工艺巅峰。</div>
+        <div class="featured-footer">
+          <div class="featured-price">¥800+</div>
+          <div class="featured-badge">清香典范</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-card scroll-reveal">
+      <div class="featured-img">💧</div>
+      <div class="featured-body">
+        <div class="featured-name">梦之蓝M9 52°</div>
+        <div class="featured-sub">洋河 · 500ml · 绵柔型</div>
+        <div class="featured-desc">洋河绵柔型白酒旗舰，以"绵甜柔和、香味协调、顺滑爽净"著称，蓝色经典系列高端产品，开创绵柔品类先河。</div>
+        <div class="featured-footer">
+          <div class="featured-price">¥1200+</div>
+          <div class="featured-badge">绵柔旗舰</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-card scroll-reveal">
+      <div class="featured-img">⛰️</div>
+      <div class="featured-body">
+        <div class="featured-name">青花郎 53°</div>
+        <div class="featured-sub">郎酒 · 500ml · 酱香型</div>
+        <div class="featured-desc">川酱代表品牌，郎酒集团旗舰产品，酱香突出，陈香舒适，醇绵细腻，空杯留香，与茅台并称"酱香双雄"。</div>
+        <div class="featured-footer">
+          <div class="featured-price">¥1200+</div>
+          <div class="featured-badge">川酱旗舰</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════
+     搜索（隐藏浮层）
+══════════════════════════════ -->
+<div id="searchOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);z-index:200;align-items:flex-start;justify-content:center;padding-top:15vh" onclick="closeSearch()">
+  <div style="max-width:600px;width:90%;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;overflow:hidden" onclick="event.stopPropagation()">
+    <div style="padding:1rem">
+      <input type="text" id="mainSearch" placeholder="搜索品牌、香型、产区..." style="width:100%;background:transparent;border:none;color:var(--text-primary);font-size:1rem;outline:none;font-family:var(--font-sans)" oninput="doSearch(this.value)">
+    </div>
+    <div id="searchResults" style="max-height:300px;overflow-y:auto;padding:0 1rem 1rem;font-size:0.85rem;color:var(--text-muted)">
+      输入关键词搜索品牌、产区或香型...
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- ═════════════════ FOOTER ═════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">🏛️ 中国白酒博物馆</div>
+        <p class="footer-desc">
+          中国白酒博物馆 — 收录中国十大白酒品牌、核心产区分布、六大香型体系及千年酒文化历史。
+          旨在推广中国白酒文化，为爱好者和研究者提供免费、开放的在线资源平台。
+        </p>
+      </div>
+      <div>
+        <div class="footer-col-title">快速导航</div>
+        <ul class="footer-links">
+          <li><a href="#brands" onclick="scrollToSection('brands')">品牌档案</a></li>
+          <li><a href="#regions" onclick="scrollToSection('regions')">核心产区</a></li>
+          <li><a href="#flavors" onclick="scrollToSection('flavors')">香型分类</a></li>
+          <li><a href="#history" onclick="scrollToSection('history')">酒文化历史</a></li>
+          <li><a href="#featured" onclick="scrollToSection('featured')">精选酒款</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">热门香型</div>
+        <ul class="footer-links">
+          <li><a href="#flavors" onclick="scrollToSection('flavors')">酱香型</a></li>
+          <li><a href="#flavors" onclick="scrollToSection('flavors')">浓香型</a></li>
+          <li><a href="#flavors" onclick="scrollToSection('flavors')">清香型</a></li>
+          <li><a href="#flavors" onclick="scrollToSection('flavors')">绵柔型</a></li>
+          <li><a href="#flavors" onclick="scrollToSection('flavors')">凤香型</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">核心产区</div>
+        <ul class="footer-links">
+          <li><a href="#regions" onclick="scrollToSection('regions')">黔派（贵州）</a></li>
+          <li><a href="#regions" onclick="scrollToSection('regions')">川派（四川）</a></li>
+          <li><a href="#regions" onclick="scrollToSection('regions')">苏派（江苏）</a></li>
+          <li><a href="#regions" onclick="scrollToSection('regions')">晋派（山西）</a></li>
+          <li><a href="#regions" onclick="scrollToSection('regions')">徽派（安徽）</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">
+        © 2025 中国白酒博物馆 · China Liquor Museum · 基于 MIT 协议开源
+      </div>
+      <div class="footer-copy">
+        数据整理自公开资料 · <a href="https://github.com/Superbishop/china-liquor-museum" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════
+// 粒子效果
+// ═══════════════════════════════════════
+(function initParticles() {
+  const container = document.getElementById('heroParticles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'hero-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = Math.random() * 10 + 's';
+    p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+    container.appendChild(p);
+  }
+})();
+
+// ═══════════════════════════════════════
+// 滚动渐入
+// ═══════════════════════════════════════
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+// ═══════════════════════════════════════
+// 平滑滚动
+// ═══════════════════════════════════════
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // 更新底部导航状态
+    document.querySelectorAll('.bottom-nav a').forEach(a => a.classList.remove('active'));
+    document.querySelector(`.bottom-nav a[href="#${id}"]`)?.classList.add('active');
+  }
+  return false;
+}
+
+// ═══════════════════════════════════════
+// 品牌筛选
+// ═══════════════════════════════════════
+function filterBrands(type, btn) {
+  // 更新 tab 状态
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+
+  // 筛选卡片
+  document.querySelectorAll('.brand-card').forEach(card => {
+    if (type === 'all' || card.dataset.type === type) {
+      card.style.display = '';
+      setTimeout(() => { card.classList.add('visible'); }, 50);
+    } else {
+      card.style.display = 'none';
+      card.classList.remove('visible');
+    }
+  });
+}
+
+// ═══════════════════════════════════════
+// 搜索
+// ═══════════════════════════════════════
+const brandData = [
+  { name: '茅台', en: 'Moutai', type: '酱香型', region: '贵州' },
+  { name: '五粮液', en: 'Wuliangye', type: '浓香型', region: '四川' },
+  { name: '泸州老窖', en: 'Luzhou Laojiao', type: '浓香型', region: '四川' },
+  { name: '汾酒', en: 'Fenjiu', type: '清香型', region: '山西' },
+  { name: '洋河', en: 'Yanghe', type: '绵柔型', region: '江苏' },
+  { name: '郎酒', en: 'Langjiu', type: '酱香型', region: '四川' },
+  { name: '古井贡酒', en: 'Gujing Gongjiu', type: '浓香型', region: '安徽' },
+  { name: '剑南春', en: 'Jiannanchun', type: '浓香型', region: '四川' },
+  { name: '水井坊', en: 'Shuijingfang', type: '浓香型', region: '四川' },
+  { name: '舍得', en: 'Shede', type: '浓香型', region: '四川' },
+  { name: '牛栏山', en: 'Niulanshan', type: '清香型', region: '北京' },
+  { name: '西凤酒', en: 'Xifeng', type: '凤香型', region: '陕西' },
+];
+
+function openSearch() {
+  const overlay = document.getElementById('searchOverlay');
+  overlay.style.display = 'flex';
+  document.getElementById('mainSearch').focus();
+}
+
+function closeSearch() {
+  document.getElementById('searchOverlay').style.display = 'none';
+}
+
+function doSearch(q) {
+  const results = document.getElementById('searchResults');
+  if (!q.trim()) {
+    results.innerHTML = '输入关键词搜索品牌、产区或香型...';
+    return;
+  }
+  const matches = brandData.filter(b =>
+    b.name.includes(q) || b.en.toLowerCase().includes(q.toLowerCase()) ||
+    b.type.includes(q) || b.region.includes(q)
+  );
+  if (matches.length === 0) {
+    results.innerHTML = `<div style="padding:1rem 0;color:var(--text-muted)">未找到"${q}"相关结果</div>`;
+    return;
+  }
+  results.innerHTML = matches.map(b =>
+    `<div style="padding:0.7rem 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="color:var(--text-primary);font-weight:500">${b.name} <span style="color:var(--text-muted);font-size:0.75rem">${b.en}</span></div>
+        <div style="color:var(--text-muted);font-size:0.72rem">${b.region} · ${b.type}</div>
+      </div>
+      <div style="font-size:0.7rem;color:var(--gold)">→</div>
+    </div>`
+  ).join('');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeSearch();
+  if (e.key === '/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+    e.preventDefault();
+    openSearch();
+  }
+});
+
+// ═══════════════════════════════════════
+// 导航滚动高亮
+// ═══════════════════════════════════════
+const sections = ['brands','regions','flavors','history','featured'];
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const top = el.offsetTop - 80;
+    const bottom = top + el.offsetHeight;
+    const navLink = document.querySelector(`.nav-links a[href="#${id}"]`);
+    const bottomLink = document.querySelector(`.bottom-nav a[href="#${id}"]`);
+    if (scrollY >= top && scrollY < bottom) {
+      navLink?.classList.add('active');
+      bottomLink?.classList.add('active');
+    } else {
+      navLink?.classList.remove('active');
+      bottomLink?.classList.remove('active');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
